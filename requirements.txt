@@ -4,4 +4,5 @@ isort
 pip
 python-dotenv
 pandas
+pytest
 -e .
