@@ -32,4 +32,10 @@ class DataGrabber:
             f"sep={self._sep!r}, "
             f"config={self._config!r})"
         )
+
+    def data(self) -> list[list[any]]:
+        return self._data_frame.values.tolist()
+
+    def columns(self) -> list[str]:
+        return self._data_frame.columns.tolist()
     
