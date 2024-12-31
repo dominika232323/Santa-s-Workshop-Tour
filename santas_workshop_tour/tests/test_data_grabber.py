@@ -22,6 +22,7 @@ def test_data_grabber_columns(data_grabber):
     expected = ["family_id", "choice_0", "choice_1", "choice_2", "choice_3", "choice_4", "choice_5", "choice_6", "choice_7", "choice_8", "choice_9", "n_people"]
     assert data_grabber.columns() == expected
 
+
 @pytest.mark.parametrize(
 	("input_n", "expected"),
 	[
@@ -35,3 +36,18 @@ def test_data_grabber_columns(data_grabber):
 )
 def test_get_family_choices(data_grabber, input_n, expected):
     assert data_grabber.get_family_choices(input_n) == expected
+
+
+@pytest.mark.parametrize(
+	("input_n", "expected"),
+	[
+		(0, 4),
+		(1, 4),
+		(16, 3),
+		(44, 2),
+		(100, 6),
+        (6000, None)
+	],
+)
+def test_get_family_size(data_grabber, input_n, expected):
+    assert data_grabber.get_family_size(input_n) == expected

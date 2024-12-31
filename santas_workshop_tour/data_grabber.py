@@ -43,7 +43,14 @@ class DataGrabber:
         family_data = self._data_frame[self._data_frame["family_id"] == family_id]
 
         if not family_data.empty:
-            choices = family_data.iloc[0, 1:-1].tolist()
-            return choices
+            return family_data.iloc[0, 1:-1].tolist()
+        else:
+            return None
+
+    def get_family_size(self, family_id: int) -> int | None:
+        family_data = self._data_frame[self._data_frame["family_id"] == family_id]
+
+        if not family_data.empty:
+            return family_data["n_people"].tolist()[0]
         else:
             return None
