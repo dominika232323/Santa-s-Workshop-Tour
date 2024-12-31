@@ -38,4 +38,12 @@ class DataGrabber:
 
     def columns(self) -> list[str]:
         return self._data_frame.columns.tolist()
-    
+
+    def get_family_choices(self, family_id: int) -> list[int] | None:
+        family_data = self._data_frame[self._data_frame["family_id"] == family_id]
+
+        if not family_data.empty:
+            choices = family_data.iloc[0, 1:-1].tolist()
+            return choices
+        else:
+            return None
