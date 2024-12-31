@@ -59,6 +59,11 @@ format:
 #################################################################################
 
 
+## Run tests
+.PHONY: tests
+tests:
+	$(PYTHON_INTERPRETER) -m pytest santas_workshop_tour/tests/ -v
+
 
 #################################################################################
 # Self Documenting Commands                                                     #

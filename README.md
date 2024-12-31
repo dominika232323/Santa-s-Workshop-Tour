@@ -4,9 +4,9 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-Kaggle 2019 competition: [Santa's Workshop Tour](https://www.kaggle.com/c/santa-workshop-tour-2019)
-
 ## Competition description
+
+Kaggle 2019 competition: [Santa's Workshop Tour](https://www.kaggle.com/c/santa-workshop-tour-2019)
 
 Santa has exciting news! For 100 days before Christmas, he opened up tours to his workshop. Because demand was so strong, and because Santa wanted to make things as fair as possible, he let each of the 5,000 families that will visit the workshop choose a list of dates they'd like to attend the workshop.
 
@@ -22,6 +22,7 @@ Santa needs the help of the Kaggle community to optimize which day each family i
 - `make clean` - deletes all compiled Python files
 - `make lint` - lints using flake8 and black
 - `make format` - formats source code with black
+- `make tests` - runs tests from *santas_workshop_tour/tests/*
 
 ## Project Organization
 
@@ -74,5 +75,8 @@ Santa needs the help of the Kaggle community to optimize which day each family i
     └── plots.py                <- Code to create visualizations
 ```
 
---------
+## Authors
+
+- Dominika Boguszewska
+- Aleksander Szymczyk
 
