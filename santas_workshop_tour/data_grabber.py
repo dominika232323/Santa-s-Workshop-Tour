@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 class DataGrabber:
-    def __init__(self, path_to_dataset: Path, *, sep: str = ',', config: dict = None) -> None:
+    def __init__(self, path_to_dataset: Path, *, sep: str = ",", config: dict = None) -> None:
         self._path_to_dataset = path_to_dataset
         self._sep = sep
         self._config = config
