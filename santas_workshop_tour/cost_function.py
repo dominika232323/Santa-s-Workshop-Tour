@@ -1,6 +1,6 @@
 import deap
 from santas_workshop_tour.data_grabber import DataGrabber
-from santas_workshop_tour.config import Individual
+from santas_workshop_tour.individual import Individual
 
 
 def cost_function(self, family_choices: DataGrabber, individual: Individual) -> float:
@@ -28,9 +28,7 @@ def calculate_restriction_penalty(individual: Individual) -> int:
     return restriction_penalty
 
 
-def calculate_choice_penalty(
-    family_choices: DataGrabber, individual: Individual
-) -> int:
+def calculate_choice_penalty(family_choices: DataGrabber, individual: Individual) -> int:
 
     choice_penalty = 0
     choices_penalty_scheme = {
