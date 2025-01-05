@@ -5,4 +5,5 @@ pip
 python-dotenv
 pandas
 pytest
+deap
 -e .
