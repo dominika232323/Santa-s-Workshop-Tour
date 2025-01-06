@@ -36,3 +36,12 @@ def save_dict_to_json(data: dict, path_to_json: Path) -> None:
 
     with open(path_to_json, mode="w") as file:
         json.dump(data, file, indent=4)
+
+
+def read_json(path_to_json: Path) -> dict:
+    path_to_json.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(path_to_json, mode="r") as file:
+        data = json.load(file)
+
+    return data
