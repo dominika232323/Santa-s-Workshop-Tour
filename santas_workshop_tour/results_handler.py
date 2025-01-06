@@ -1,5 +1,6 @@
 import csv
 import json
+from math import isclose
 
 from loguru import logger
 from pathlib import Path
@@ -45,3 +46,15 @@ def save_dict_to_json(data: dict, path_to_json: Path) -> None:
 
     with open(path_to_json, mode="w") as file:
         json.dump(data, file, indent=4)
+
+
+def is_result_valid(path_to_result: Path) -> bool:
+    pass
+
+
+def get_result_score(fitness_function_value: float, time: float, weight_fitness: float = 0.7, weight_time: float = 0.3) -> float:
+    if not isclose(weight_fitness + weight_time, 1):
+        raise ValueError(f"Expected weight_fitness + weight_time = 1, got {weight_fitness + weight_time}")
+
+    return fitness_function_value * weight_fitness + time * weight_time
+
