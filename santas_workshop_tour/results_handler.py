@@ -53,8 +53,8 @@ def is_result_valid(path_to_result: Path) -> bool:
 
 
 def get_result_score(fitness_function_value: float, time: float, weight_fitness: float = 0.7) -> float:
-    if weight_fitness > 1:
-        raise ValueError(f"weight_fitness must be <= 1, got {weight_fitness}")
+    if weight_fitness > 1 or weight_fitness < 0:
+        raise ValueError(f"weight_fitness must be >= 0 and <= 1, got {weight_fitness}")
 
     weight_time = 1 - weight_fitness
 
