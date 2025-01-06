@@ -1,6 +1,7 @@
 from deap import tools
 from santas_workshop_tour.data_grabber import DataGrabber
 from santas_workshop_tour.config import Individual, MutationVariant
+from santas_workshop_tour.decorators import timer
 from santas_workshop_tour.individual_factory import IndividualFactory
 from santas_workshop_tour.cost_function import cost_function
 from typing import Tuple
@@ -26,6 +27,7 @@ class EvolutionaryAlgorithm:
         self.parents = parents
         self.elite_size = elite_size
 
+    @timer
     def __call__(self, generations_num: int, N: int):
         population = self.create_population(N)
         self.setup_evolution()
