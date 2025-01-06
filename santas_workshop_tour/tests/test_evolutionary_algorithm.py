@@ -1,6 +1,5 @@
 import pytest
 
-from santas_workshop_tour.evolutionary_algorithm import Individual
 from santas_workshop_tour.evolutionary_algorithm import EvolutionaryAlgorithm
 from santas_workshop_tour.data_grabber import DataGrabber
 from santas_workshop_tour.config import FAMILY_DATA
