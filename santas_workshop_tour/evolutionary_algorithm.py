@@ -28,7 +28,7 @@ class EvolutionaryAlgorithm:
         self.elite_size = elite_size
 
     @timer
-    def __call__(self, generations_num: int, N: int):
+    def __call__(self, generations_num: int, N: int) -> Individual:
         population = self.create_population(N)
         self.setup_evolution()
         best_individual = None
