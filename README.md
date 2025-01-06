@@ -23,6 +23,7 @@ Santa needs the help of the Kaggle community to optimize which day each family i
 - `make lint` - lints using flake8 and black
 - `make format` - formats source code with black
 - `make tests` - runs tests from *santas_workshop_tour/tests/*
+- `make santas` - runs *santas_workshop_tour/main.py* script
 
 ## Project Organization
 

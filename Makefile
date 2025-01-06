@@ -65,6 +65,12 @@ tests:
 	$(PYTHON_INTERPRETER) -m pytest santas_workshop_tour/tests/ -v
 
 
+## Run santas_workshop_tour program
+.PHONY: santas
+santas:
+	$(PYTHON_INTERPRETER) santas_workshop_tour/main.py
+
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
