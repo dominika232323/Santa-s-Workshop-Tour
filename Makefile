@@ -65,6 +65,19 @@ tests:
 	$(PYTHON_INTERPRETER) -m pytest santas_workshop_tour/tests/ -v
 
 
+## Run santas_workshop_tour program
+.PHONY: santas
+santas:
+	$(PYTHON_INTERPRETER) santas_workshop_tour/main.py
+
+
+## Compare results
+# Usage example: make compare results="./results/evolutionary_algorithm/20250107_000437 ./results/evolutionary_algorithm/20250107_001357"
+.PHONY: compare
+results =
+compare:
+	$(PYTHON_INTERPRETER) santas_workshop_tour/compare_results.py $(results)
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
