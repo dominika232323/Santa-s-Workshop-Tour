@@ -12,6 +12,13 @@ def write_value_to_text_file(value: float, path_to_txt: Path) -> None:
     path_to_txt.write_text(str(value))
 
 
+def read_value_from_txt_file(path_to_txt: Path) -> float:
+    path_to_txt.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(path_to_txt, "r") as file:
+        return float(file.read())
+
+
 def save_list_to_csv(data: list[int], path_to_csv: Path, headers: list[str]) -> None:
     if len(headers) != 2:
         raise ValueError(f"Expected 2 headers, got {len(headers)}")
