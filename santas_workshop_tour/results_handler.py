@@ -4,7 +4,7 @@ from santas_workshop_tour.config import Individual
 from santas_workshop_tour.files_io import write_value_to_text_file, save_list_to_csv, save_dict_to_json
 
 
-def save_results(best_individual: Individual, time: float, path_to_save: Path) -> None:
+def save_result(best_individual: Individual, time: float, path_to_save: Path) -> None:
     save_list_to_csv(best_individual[0], path_to_save / "assigned_days.csv", ["family_id", "assigned_day"])
     save_dict_to_json(best_individual[1], path_to_save / "people_per_day.json")
     write_value_to_text_file(best_individual.fitness.values[0], path_to_save / "fitness_function_value.txt")
