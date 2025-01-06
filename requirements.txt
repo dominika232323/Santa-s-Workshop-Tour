@@ -7,4 +7,5 @@ pandas
 pytest
 deap
 loguru
+typer
 -e .
