@@ -5,7 +5,7 @@ import random
 import heapq
 
 
-class Individual:
+class IndividualFactory:
     def __init__(self):
         if not hasattr(creator, "FitnessMin"):
             creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
@@ -17,11 +17,13 @@ class Individual:
         toolbox.register("individual", tools.initIterate, creator.Individual, init_func)
         return toolbox
 
-    def init_individual(self, family_choices: DataGrabber) -> Tuple[List[int], Dict[int, int]]:
-        visits_day = [-1 for _ in range(5000)]
-        visitors_by_days = {i: 0 for i in range(1, 101)}
+    def init_individual(
+        self, family_choices: DataGrabber, families_num: int = 5000, days: int = 100
+    ) -> Tuple[List[int], Dict[int, int]]:
+        visits_day = [-1 for _ in range(families_num)]
+        visitors_by_days = {i: 0 for i in range(1, days + 1)}
 
-        preferences_random_order = self.randomize_preferences_order(family_choices)
+        preferences_random_order = self.randomize_preferences_order(family_choices, families_num)
 
         for family_id, preferences in preferences_random_order.items():
             family_size = family_choices.get_family_size(family_id)
@@ -47,15 +49,17 @@ class Individual:
         )
         return visits_day, visitors_by_days
 
-    def randomize_preferences_order(self, preferences: DataGrabber) -> dict:
-        preferences_dict = self.make_preferences_dict(preferences)
+    def randomize_preferences_order(
+        self, preferences: DataGrabber, families_num: int = 5000
+    ) -> dict:
+        preferences_dict = self.make_preferences_dict(preferences, families_num)
         shuffled_items = random.sample(list(preferences_dict.items()), len(preferences_dict))
 
         return dict(shuffled_items)
 
-    def make_preferences_dict(self, preferences: DataGrabber) -> dict:
+    def make_preferences_dict(self, preferences: DataGrabber, families_num: int = 5000) -> dict:
 
-        return {i: preferences.get_family_choices(i) for i in range(5000)}
+        return {i: preferences.get_family_choices(i) for i in range(families_num)}
 
     def check_visiting_restriction(
         self, family_size: int, preference: DataGrabber, visitors_by_days: dict
