@@ -1,7 +1,9 @@
 from pathlib import Path
 
+from loguru import logger
+
 from santas_workshop_tour.config import Individual
-from santas_workshop_tour.files_io import write_value_to_text_file, save_list_to_csv, save_dict_to_json
+from santas_workshop_tour.files_io import write_value_to_text_file, save_list_to_csv, save_dict_to_json, read_json
 
 
 def save_result(best_individual: Individual, time: float, path_to_save: Path) -> None:
@@ -11,8 +13,13 @@ def save_result(best_individual: Individual, time: float, path_to_save: Path) ->
     write_value_to_text_file(time, path_to_save / "time.txt")
 
 
-def is_result_valid(path_to_result: Path) -> bool:
-    pass
+def is_result_valid(people_per_day_dict: dict[str: int]) -> bool:
+    for day, people_number in people_per_day_dict.items():
+        if people_number < 125 or people_number > 300:
+            logger.info(f"Result is invalid. {day} is out of range.")
+            return False
+
+    return True
 
 
 def get_result_score(fitness_function_value: float, time: float, weight_fitness: float = 0.7) -> float:
