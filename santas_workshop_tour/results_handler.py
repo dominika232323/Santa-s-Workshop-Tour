@@ -16,7 +16,7 @@ def save_result(best_individual: Individual, time: float, path_to_save: Path) ->
 def is_result_valid(people_per_day_dict: dict[str: int]) -> bool:
     for day, people_number in people_per_day_dict.items():
         if people_number < 125 or people_number > 300:
-            logger.info(f"Result is invalid. {day} is out of range.")
+            logger.info(f"Result is invalid. Day {day} with number of visitors {people_number} is out of range.")
             return False
 
     return True

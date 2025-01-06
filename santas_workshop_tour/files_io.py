@@ -46,8 +46,6 @@ def save_dict_to_json(data: dict, path_to_json: Path) -> None:
 
 
 def read_json(path_to_json: Path) -> dict:
-    path_to_json.parent.mkdir(parents=True, exist_ok=True)
-
     with open(path_to_json, mode="r") as file:
         data = json.load(file)
 
