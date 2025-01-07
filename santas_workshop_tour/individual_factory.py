@@ -3,6 +3,7 @@ from deap import creator, base, tools
 from santas_workshop_tour.data_grabber import DataGrabber
 import random
 import heapq
+import numpy as np
 
 
 class IndividualFactory:
@@ -20,25 +21,25 @@ class IndividualFactory:
     def init_individual(
         self, family_choices: DataGrabber, families_num: int = 5000, days: int = 100
     ) -> Tuple[List[int], Dict[int, int]]:
-        visits_day = [-1 for _ in range(families_num)]
-        visitors_by_days = {i: 0 for i in range(1, days + 1)}
+        visits_day = [-1] * families_num
+        visitors_by_days = {i: 0 for i in range(days, 0, -1)}
 
         preferences_random_order = self.randomize_preferences_order(family_choices, families_num)
+        family_sizes = {fam_id: family_choices.get_family_size(fam_id) for fam_id in range(families_num)}
 
         for family_id, preferences in preferences_random_order.items():
-            family_size = family_choices.get_family_size(family_id)
-            choices_skipped = 0
+            family_size = family_sizes[family_id]
+            scheduled = False
 
             for preference in preferences:
                 if self.check_visiting_restriction(family_size, preference, visitors_by_days):
                     visits_day, visitors_by_days = self.schedule_family(
                         family_id, preference, visits_day, visitors_by_days, family_size
                     )
+                    scheduled = True
                     break
-                else:
-                    choices_skipped += 1
 
-            if choices_skipped == 10:
+            if not scheduled:
                 least_occupied_day = min(visitors_by_days, key=visitors_by_days.get)
                 visits_day, visitors_by_days = self.schedule_family(
                     family_id, least_occupied_day, visits_day, visitors_by_days, family_size
@@ -79,7 +80,6 @@ class IndividualFactory:
     ) -> Tuple[list, dict]:
         while True:
             all_verified = True
-
             for day, visitors in visitors_by_days.items():
                 switch = False
                 if visitors < 125:
@@ -89,7 +89,6 @@ class IndividualFactory:
                         10, visitors_by_days.items(), key=lambda item: item[1]
                     )
                     ten_largest_days = [i[0] for i in ten_largest]
-
                     for family_id, preference in enumerate(visits_day):
                         if preference in ten_largest_days:
 
@@ -127,6 +126,9 @@ class IndividualFactory:
         visits_day: list,
         visitors_by_days: dict,
     ) -> Tuple[list, dict]:
+
+        previous_day = int(previous_day)
+        new_day = int(new_day)
 
         visitors_by_days[previous_day] -= family_choices.get_family_size(family_id)
         visitors_by_days[new_day] += family_choices.get_family_size(family_id)

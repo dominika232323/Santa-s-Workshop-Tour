@@ -52,9 +52,9 @@ class EvolutionaryAlgorithm:
                 ind.fitness.values = fit
 
             population = self.toolbox.succession(population, offspring, S=self.elite_size)
-            print(len(population))
             best_ind = tools.selBest(population, 1)[0]
             print(f"Generation {gen}: Best Fitness = {best_ind.fitness.values[0]}")
+        print(best_ind)
 
     def setup_evolution(self):
         self.toolbox.register("mutate", self.mutation, variant=MutationVariant.EXPLORATORY)
@@ -103,11 +103,12 @@ class EvolutionaryAlgorithm:
         ind1_left, ind1_right, ind2_left, ind2_right = self.split_individuals(
             individual_1, individual_2, cxpoint
         )
-
-        self.update_visitors_by_days(individual_1, individual_2, ind1_right, ind2_right, cxpoint)
-
-        new_individual_1 = (ind1_left + ind2_right, individual_1[1])
-        new_individual_2 = (ind2_left + ind1_right, individual_2[1])
+        visits_days_1 = ind1_left + ind2_right
+        visits_days_2 = ind2_left + ind1_right
+        new_dict_1 = self.build_visitors_by_days(visits_days_1)
+        new_dict_2 = self.build_visitors_by_days(visits_days_2)
+        new_individual_1 = (visits_days_1, new_dict_1)
+        new_individual_2 = (visits_days_2, new_dict_2)
 
         return new_individual_1, new_individual_2
 
@@ -122,6 +123,12 @@ class EvolutionaryAlgorithm:
         ind2_right = individual_2[0][cxpoint:]
         return ind1_left, ind1_right, ind2_left, ind2_right
 
+    def build_visitors_by_days(self, individual):
+        new_dict = {i: 0 for i in range(1, 101)}
+        for family_id, day in enumerate(individual):
+            new_dict[day] += self.family_data.get_family_size(family_id)
+        return new_dict
+
     def update_visitors_by_days(
         self,
         individual_1: Individual,
@@ -130,13 +137,15 @@ class EvolutionaryAlgorithm:
         ind2_right: list,
         cxpoint: int
     ) -> None:
-        for family_id, day in enumerate(ind1_right, start=cxpoint):
-            individual_1[1][day] -= self.family_data.get_family_size(family_id)
-            individual_2[1][day] += self.family_data.get_family_size(family_id)
+        for family_id, day in enumerate(ind1_right):
+            i = family_id + cxpoint
+            individual_1[1][day] -= self.family_data.get_family_size(i)
+            individual_2[1][day] += self.family_data.get_family_size(i)
 
-        for family_id, day in enumerate(ind2_right, start=cxpoint):
-            individual_1[1][day] += self.family_data.get_family_size(family_id)
-            individual_2[1][day] -= self.family_data.get_family_size(family_id)
+        for family_id, day in enumerate(ind2_right):
+            j = family_id + cxpoint
+            individual_1[1][day] += self.family_data.get_family_size(j)
+            individual_2[1][day] -= self.family_data.get_family_size(j)
 
     def elite_selection(
         self, population: list[Individual], offspring: list[Individual], S: int
@@ -149,4 +158,4 @@ class EvolutionaryAlgorithm:
 
 grabber = DataGrabber(FAMILY_DATA)
 algorithm = EvolutionaryAlgorithm(grabber, 0.7, 0.05, 0.02, 40, 30)
-algorithm(20, 100)
+algorithm(50, 200)

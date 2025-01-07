@@ -34,16 +34,42 @@ def evolutionary_algorithm():
 
 
 def test_cost_function(mock_individual, mock_data_grabber):
-    calculate_restriction_penalty.return_value = 1000
-    calculate_choice_penalty.return_value = 2000
-    calculate_accounting_penalty.return_value = 3000
+    visits_day = [1, 2, 3, 10, 4]
+    visitors_by_days = {1: 126, 2: 134, 3: 170, 4: 128, 5: 0, 6: 0, 7: 0, 8: 0 , 9: 0, 10: 130}
+    mock_individual = (visits_day, visitors_by_days)
+
+    # Expected penalties based on manual calculation:
+    # Family 0 gets day 1 (choice 0) -> penalty = 0
+    # Family 1 gets day 2 (choice 0) -> penalty = 0
+    # Family 2 gets day 3 (choice 0) -> penalty = 0
+    # Family 3 gets day 10 (choice 4) -> penalty = 200 + family_size * 9
+    # Family 4 gets day 4 (choice 3) -> penalty = 100 + family_size * 9
+
+    mock_data_grabber.get_family_choices.side_effect = [
+        [1, 2, 3, 4, 5],
+        [2, 3, 4, 5, 6],
+        [3, 4, 5, 6, 7],
+        [1, 9, 8, 7, 10],
+        [7, 5, 6, 4, 8],
+    ]
+    mock_data_grabber.get_family_size.side_effect = [126, 134, 170, 130, 128]  # Family sizes
+
+    # Expected penalty calculation
+    expected_choice_penalty = (
+        0  # Family 0
+        + 0  # Family 1
+        + 0  # Family 2
+        + 200
+        + (130 * 9)  # Family 3 (choice 4)
+        + 100
+        + (128 * 9)  # Family 4 (choice 3)
+    )
+
+    expected_restriction_penalty = sum(1 for i in visitors_by_days.values() if i < 125) * 100000
 
     total_cost = cost_function(mock_individual, mock_data_grabber)
 
-    assert total_cost == (1000 + 2000 + 3000,)
-    calculate_restriction_penalty.assert_called_once_with(mock_individual)
-    calculate_choice_penalty.assert_called_once_with(mock_data_grabber, mock_individual)
-    calculate_accounting_penalty.assert_called_once_with(mock_individual)
+    assert total_cost == (expected_restriction_penalty + expected_choice_penalty + 21162.476702791555,)
 
 
 def test_calculate_restriction_penalty_lower_bound(mock_individual):
@@ -140,11 +166,15 @@ def test_calculate_accounting_penalty(mock_individual):
     visitors_by_days = mock_individual[1]
     prev_visitors = visitors_by_days[100]
     expected_penalty = 0
+    prev_visitors_debugging_list= [prev_visitors]
+    penalty_debugging_list = []
     for visitors in reversed(visitors_by_days.values()):
-        expected_penalty += max(
+        temp_penalty = max(
             (visitors - 125.0) / 400.0 * visitors ** (0.5 + abs(visitors - prev_visitors) / 50.0),
             0,
         )
+        penalty_debugging_list.append(temp_penalty)
+        expected_penalty += temp_penalty
         prev_visitors = visitors
-
+        prev_visitors_debugging_list.append(prev_visitors)
     assert penalty == pytest.approx(expected_penalty, rel=1e-5)
