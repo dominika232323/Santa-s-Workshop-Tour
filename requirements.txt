@@ -6,4 +6,5 @@ python-dotenv
 pandas
 pytest
 deap
+numpy
 -e .
