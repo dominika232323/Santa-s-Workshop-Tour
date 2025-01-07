@@ -36,7 +36,7 @@ def main(results: list[Path]):
 
     save_dict_to_json(scores, RESULTS_COMPARISONS / current_timestamp / "scores.json")
 
-    best_result = {best_result_path: best_result_score}
+    best_result = {str(best_result_path): best_result_score}
     save_dict_to_json(best_result, RESULTS_COMPARISONS / current_timestamp / "best_result.json")
 
 
