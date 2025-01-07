@@ -1,6 +1,7 @@
 from deap import tools
 from santas_workshop_tour.data_grabber import DataGrabber
-from santas_workshop_tour.config import FAMILY_DATA, Individual, MutationVariant
+from santas_workshop_tour.config import Individual, MutationVariant
+from santas_workshop_tour.decorators import timer
 from santas_workshop_tour.individual_factory import IndividualFactory
 from santas_workshop_tour.cost_function import cost_function
 from typing import Tuple
@@ -26,9 +27,12 @@ class EvolutionaryAlgorithm:
         self.parents = parents
         self.elite_size = elite_size
 
-    def __call__(self, generations_num: int, N: int):
+    @timer
+    def __call__(self, generations_num: int, N: int) -> Individual:
         population = self.create_population(N)
         self.setup_evolution()
+        best_individual = None
+
         for gen in range(generations_num):
             offspring = self.toolbox.select(population, len(population))
 
@@ -54,7 +58,11 @@ class EvolutionaryAlgorithm:
             population = self.toolbox.succession(population, offspring, S=self.elite_size)
             best_ind = tools.selBest(population, 1)[0]
             print(f"Generation {gen}: Best Fitness = {best_ind.fitness.values[0]}")
-        print(best_ind)
+
+            if not best_individual or best_ind.fitness.values[0] < best_individual.fitness.values[0]:
+                best_individual = best_ind
+
+        return best_individual
 
     def setup_evolution(self):
         self.toolbox.register("mutate", self.mutation, variant=MutationVariant.EXPLORATORY)
@@ -154,8 +162,3 @@ class EvolutionaryAlgorithm:
         remaining_slots = len(population) - S
         next_gen = elites + tools.selBest(offspring, remaining_slots)
         return next_gen
-
-
-grabber = DataGrabber(FAMILY_DATA)
-algorithm = EvolutionaryAlgorithm(grabber, 0.7, 0.05, 0.02, 40, 30)
-algorithm(50, 200)

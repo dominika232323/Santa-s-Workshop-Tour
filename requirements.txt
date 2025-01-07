@@ -6,5 +6,7 @@ python-dotenv
 pandas
 pytest
 deap
+loguru
+typer
 numpy
 -e .
