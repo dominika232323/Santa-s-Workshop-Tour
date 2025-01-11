@@ -9,7 +9,7 @@ from typing import Tuple, Any
 from functools import partial
 import random
 
-from santas_workshop_tour.statistics import get_population_statistics
+from results_analysis.statistics import get_population_statistics
 
 
 class EvolutionaryAlgorithm:

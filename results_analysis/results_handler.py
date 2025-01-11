@@ -3,7 +3,7 @@ from pathlib import Path
 from loguru import logger
 
 from santas_workshop_tour.config import Individual
-from santas_workshop_tour.files_io import write_value_to_text_file, save_data_to_csv, save_dict_to_json, read_json
+from results_analysis.files_io import write_value_to_text_file, save_data_to_csv, save_dict_to_json
 
 
 def save_result(

@@ -5,8 +5,8 @@ import typer
 from loguru import logger
 
 from santas_workshop_tour.config import RESULTS_COMPARISONS
-from santas_workshop_tour.files_io import read_json, read_value_from_txt_file, save_dict_to_json
-from santas_workshop_tour.results_handler import is_result_valid, get_result_score
+from results_analysis.files_io import read_json, read_value_from_txt_file, save_dict_to_json
+from results_analysis.results_handler import is_result_valid, get_result_score
 
 app = typer.Typer()
 

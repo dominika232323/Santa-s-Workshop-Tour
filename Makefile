@@ -76,7 +76,7 @@ santas:
 .PHONY: compare
 results =
 compare:
-	$(PYTHON_INTERPRETER) santas_workshop_tour/compare_results.py $(results)
+	$(PYTHON_INTERPRETER) results_analysis/compare_results.py $(results)
 
 #################################################################################
 # Self Documenting Commands                                                     #

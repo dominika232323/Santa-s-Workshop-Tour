@@ -5,7 +5,7 @@ from loguru import logger
 from santas_workshop_tour.config import FAMILY_DATA, RESULTS_EVOLUTIONARY_ALGORITHM
 from santas_workshop_tour.data_grabber import DataGrabber
 from santas_workshop_tour.evolutionary_algorithm import EvolutionaryAlgorithm
-from santas_workshop_tour.results_handler import save_result
+from results_analysis.results_handler import save_result
 
 if __name__ == '__main__':
     current_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
