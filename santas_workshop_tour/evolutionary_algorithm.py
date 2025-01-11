@@ -1,12 +1,15 @@
 from deap import tools
+
 from santas_workshop_tour.data_grabber import DataGrabber
 from santas_workshop_tour.config import Individual, MutationVariant
 from santas_workshop_tour.decorators import timer
 from santas_workshop_tour.individual_factory import IndividualFactory
 from santas_workshop_tour.cost_function import cost_function
-from typing import Tuple
+from typing import Tuple, Any
 from functools import partial
 import random
+
+from santas_workshop_tour.statistics import get_population_statistics
 
 
 class EvolutionaryAlgorithm:
@@ -28,10 +31,13 @@ class EvolutionaryAlgorithm:
         self.elite_size = elite_size
 
     @timer
-    def __call__(self, generations_num: int, N: int) -> Individual:
+    def __call__(self, generations_num: int, N: int) -> tuple[Any | None, list[Any], list[Any]]:
         population = self.create_population(N)
         self.setup_evolution()
         best_individual = None
+
+        population_statistics = []
+        best_individuals_fitness_values = []
 
         for gen in range(generations_num):
             offspring = self.toolbox.select(population, len(population))
@@ -59,10 +65,13 @@ class EvolutionaryAlgorithm:
             best_ind = tools.selBest(population, 1)[0]
             print(f"Generation {gen}: Best Fitness = {best_ind.fitness.values[0]}")
 
+            population_statistics.append(get_population_statistics(population))
+            best_individuals_fitness_values.append(best_ind.fitness.values[0])
+
             if not best_individual or best_ind.fitness.values[0] < best_individual.fitness.values[0]:
                 best_individual = best_ind
 
-        return best_individual
+        return best_individual, population_statistics, best_individuals_fitness_values
 
     def setup_evolution(self):
         self.toolbox.register("mutate", self.mutation, variant=MutationVariant.EXPLORATORY)

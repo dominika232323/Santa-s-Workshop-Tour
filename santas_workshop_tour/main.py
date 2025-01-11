@@ -13,8 +13,15 @@ if __name__ == '__main__':
 
     grabber = DataGrabber(FAMILY_DATA)
     algorithm = EvolutionaryAlgorithm(grabber, 0.7, 0.05, 0.02, 40, 30)
-    best_individual, time = algorithm(2, 50)
+    results, time = algorithm(2, 50)
+
+    best_individual = results[0]
+    population_statistics = results[1]
+    best_individuals_fitness_values = results[2]
 
     result_path = RESULTS_EVOLUTIONARY_ALGORITHM / current_timestamp
     logger.info(f"Saving results to {result_path}")
     save_result(best_individual, time, result_path)
+
+    print(population_statistics)
+    print(best_individuals_fitness_values)
