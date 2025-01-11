@@ -21,7 +21,5 @@ if __name__ == '__main__':
 
     result_path = RESULTS_EVOLUTIONARY_ALGORITHM / current_timestamp
     logger.info(f"Saving results to {result_path}")
-    save_result(best_individual, time, result_path)
+    save_result(best_individual, population_statistics, best_individuals_fitness_values, time, result_path)
 
-    print(population_statistics)
-    print(best_individuals_fitness_values)
