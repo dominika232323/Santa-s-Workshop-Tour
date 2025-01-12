@@ -24,6 +24,7 @@ Santa needs the help of the Kaggle community to optimize which day each family i
 - `make format` - formats source code with black
 - `make tests` - runs tests from *santas_workshop_tour/tests/*
 - `make santas` - runs *santas_workshop_tour/main.py* script
+- `make compare` - compares all results from *results/evolutionary_algorithm*
 - `make compare results="path/to/result/1 path/to/result/2"` - compares given results 
 
 ## Authors
