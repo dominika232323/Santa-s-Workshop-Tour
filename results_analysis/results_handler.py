@@ -4,7 +4,8 @@ from loguru import logger
 
 from results_analysis.generate_plots import generate_line_plot, generate_statistics_plot
 from santas_workshop_tour.config import Individual
-from results_analysis.files_io import write_value_to_text_file, save_data_to_csv, save_dict_to_json
+from results_analysis.files_io import write_value_to_text_file, save_data_to_csv, save_dict_to_json, \
+    read_value_from_txt_file
 
 
 def save_result(
@@ -63,4 +64,8 @@ def get_result_score(fitness_function_value: float, time: float, weight_fitness:
     weight_time = 1 - weight_fitness
 
     return fitness_function_value * weight_fitness + time * weight_time
+
+
+def get_time_result(result_path: Path) -> float:
+    return read_value_from_txt_file(result_path / "time.txt")
 
