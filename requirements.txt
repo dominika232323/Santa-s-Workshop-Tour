@@ -9,4 +9,5 @@ deap
 loguru
 typer
 numpy
+matplotlib
 -e .

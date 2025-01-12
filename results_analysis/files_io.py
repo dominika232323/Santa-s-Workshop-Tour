@@ -1,6 +1,7 @@
 import csv
 import json
 from pathlib import Path
+from typing import Any
 
 from loguru import logger
 
@@ -19,21 +20,26 @@ def read_value_from_txt_file(path_to_txt: Path) -> float:
         return float(file.read())
 
 
-def save_list_to_csv(data: list[int], path_to_csv: Path, headers: list[str]) -> None:
-    if len(headers) != 2:
-        raise ValueError(f"Expected 2 headers, got {len(headers)}")
-
+def save_data_to_csv(data: list[Any], path_to_csv: Path, headers: list[str]) -> None:
     path_to_csv.parent.mkdir(parents=True, exist_ok=True)
 
-    logger.info(f"Writing list to csv at {path_to_csv}")
-
-    with path_to_csv.open(mode="w", newline="") as file:
+    with path_to_csv.open(mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
 
         writer.writerow(headers)
 
-        for family_id, assigned_day in enumerate(data):
-            writer.writerow([family_id, assigned_day])
+        if isinstance(data, list):
+            for index, value in enumerate(data):
+                if isinstance(value, tuple):
+                    writer.writerow([index] + list(value))
+                elif isinstance(value, list):
+                    writer.writerow([index] + value)
+                else:
+                    writer.writerow([index, value])
+        else:
+            raise ValueError("Unsupported data type. Only lists, tuples, or nested lists are supported.")
+
+    logger.info(f"Writing data to csv at {path_to_csv}")
 
 
 def save_dict_to_json(data: dict, path_to_json: Path) -> None:
@@ -50,3 +56,7 @@ def read_json(path_to_json: Path) -> dict:
         data = json.load(file)
 
     return data
+
+
+def find_subdirectories(directory: Path) -> list[Path]:
+    return [subdir for subdir in directory.rglob('*') if subdir.is_dir()]
