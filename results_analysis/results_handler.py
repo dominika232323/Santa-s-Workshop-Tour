@@ -69,3 +69,6 @@ def get_result_score(fitness_function_value: float, time: float, weight_fitness:
 def get_time_result(result_path: Path) -> float:
     return read_value_from_txt_file(result_path / "time.txt")
 
+
+def get_fitness_value_result(result_path: Path) -> float:
+    return read_value_from_txt_file(result_path / "fitness_function_value.txt")

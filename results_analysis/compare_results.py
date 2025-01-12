@@ -7,7 +7,8 @@ from loguru import logger
 from results_analysis.generate_plots import generate_boxplot
 from santas_workshop_tour.config import RESULTS_COMPARISONS, RESULTS_EVOLUTIONARY_ALGORITHM
 from results_analysis.files_io import read_json, read_value_from_txt_file, save_dict_to_json, find_subdirectories
-from results_analysis.results_handler import is_result_valid, get_result_score, get_time_result
+from results_analysis.results_handler import is_result_valid, get_result_score, get_time_result, \
+    get_fitness_value_result
 
 app = typer.Typer()
 
@@ -26,21 +27,27 @@ def main(results: list[Path] = typer.Argument(None, help="List of result directo
     best_result_path = None
     best_result_score = None
     runtimes = []
+    fitness_values = []
 
     for result_path in results:
-        people_per_day_dict = read_json(result_path / "people_per_day.json")
+        try:
+            people_per_day_dict = read_json(result_path / "people_per_day.json")
 
-        if is_result_valid(people_per_day_dict):
-            fitness_function_value = read_value_from_txt_file(result_path / "fitness_function_value.txt")
-            time = get_time_result(result_path)
-            runtimes.append(time)
+            if is_result_valid(people_per_day_dict):
+                fitness_function_value = get_fitness_value_result(result_path)
+                fitness_values.append(fitness_function_value)
 
-            result_score = get_result_score(fitness_function_value, time)
-            scores[str(result_path)] = result_score
+                time = get_time_result(result_path)
+                runtimes.append(time)
 
-            if best_result_path is None or result_score > best_result_score:
-                best_result_path = result_path
-                best_result_score = result_score
+                result_score = get_result_score(fitness_function_value, time)
+                scores[str(result_path)] = result_score
+
+                if best_result_path is None or result_score > best_result_score:
+                    best_result_path = result_path
+                    best_result_score = result_score
+        except FileNotFoundError:
+            logger.warning(f"Result files not found at {result_path}")
 
     save_dict_to_json(scores, RESULTS_COMPARISONS / current_timestamp / "scores.json")
 
@@ -50,9 +57,17 @@ def main(results: list[Path] = typer.Argument(None, help="List of result directo
     generate_boxplot(
         runtimes,
         results,
-        RESULTS_COMPARISONS / current_timestamp / "runtimes.png",
+        RESULTS_COMPARISONS / current_timestamp / "runtime_distribution.png",
         "Rozkład czasu wykonywania",
         "Czas (s)"
+    )
+
+    generate_boxplot(
+        fitness_values,
+        results,
+        RESULTS_COMPARISONS / current_timestamp / "fitness_value_distribution.png",
+        "Rozkład wartości funkcji celu",
+        "Wartość funkcji celu"
     )
 
 
