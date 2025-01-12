@@ -4,7 +4,8 @@ from pathlib import Path
 import typer
 from loguru import logger
 
-from results_analysis.generate_plots import generate_boxplot, generate_comparison_plot_multiple_y_axes
+from results_analysis.generate_plots import generate_boxplot, generate_comparison_plot_multiple_y_axes, \
+    generate_comparison_plot_normalized_y_axis
 from santas_workshop_tour.config import RESULTS_COMPARISONS, RESULTS_EVOLUTIONARY_ALGORITHM
 from results_analysis.files_io import read_json, save_dict_to_json, find_subdirectories
 from results_analysis.results_handler import is_result_valid, get_result_score, get_time_result, \
@@ -75,6 +76,14 @@ def main(results: list[Path] = typer.Argument(None, help="List of result directo
         list(scores.values()),
         results,
         RESULTS_COMPARISONS / current_timestamp / "comparison_plot.png",
+    )
+
+    generate_comparison_plot_normalized_y_axis(
+        runtimes,
+        fitness_values,
+        list(scores.values()),
+        results,
+        RESULTS_COMPARISONS / current_timestamp / "comparison_normalized_plot.png",
     )
 
 if __name__ == "__main__":

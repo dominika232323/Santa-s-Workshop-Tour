@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Any
 
 import matplotlib.pyplot as plt
+import numpy as np
 from loguru import logger
 
 from results_analysis.statistics import get_statistics
@@ -90,14 +91,41 @@ def generate_comparison_plot_multiple_y_axes(
 
     ax1.tick_params(axis='x', labelrotation=90)
 
-    # Adjust spacing to fit the title
-    # plt.subplots_adjust(top=1.5)
-
     title = "Czasy wykonania, wartości funkcji celu i oceny wyniku dla różnych uruchomień"
     plt.title(title)
 
     fig.tight_layout()
     plt.grid(True, linestyle="--", alpha=0.5)
+
+    save_plot(path_to_save, title, True)
+
+
+def generate_comparison_plot_normalized_y_axis(
+        runtimes: list[float],
+        fitness_values: list[float],
+        results_scores: list[float],
+        result_paths: list[Path],
+        path_to_save: Path
+) -> None:
+    normalized_runtimes = (runtimes - np.min(runtimes)) / (np.max(runtimes) - np.min(runtimes))
+    normalized_fitness = (fitness_values - np.min(fitness_values)) / (np.max(fitness_values) - np.min(fitness_values))
+    normalized_scores = (results_scores - np.min(results_scores)) / (np.max(results_scores) - np.min(results_scores))
+
+    runs = [str(path.stem) for path in result_paths]
+
+    plt.plot(runs, normalized_runtimes, marker="o", label="Znormalizowany czas wykonania")
+    plt.plot(runs, normalized_fitness, marker="s", label="Znormalizowana wartość funkcji celu")
+    plt.plot(runs, normalized_scores, marker="^", label="Znormalizowana ocena wyniku")
+
+    plt.xlabel("Wykonanie algorytmu")
+    plt.ylabel("Znormalizowane wartości")
+
+    title = "Znormalizowane czasy wykonania, wartości funkcji celu i oceny wyniku dla różnych uruchomień"
+    plt.title(title)
+
+    plt.legend()
+    plt.grid(True, linestyle="--", alpha=0.5)
+    plt.tick_params(axis='x', labelrotation=90)
 
     save_plot(path_to_save, title, True)
 
