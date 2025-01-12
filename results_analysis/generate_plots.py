@@ -47,6 +47,20 @@ def generate_statistics_plot(
     save_plot(path_to_save, title)
 
 
+def generate_boxplot(values: list[float], result_paths: list[Path], path_to_save: Path, title: str, ylabel: str) -> None:
+    plt.boxplot(values)
+
+    plt.xticks([1], ["Runtimes"])
+
+    for i, (runtime, path) in enumerate(zip(values, result_paths)):
+        plt.text(1.1, runtime, str(path.stem), ha="left", va="center", fontsize=9)
+
+    plt.title(title)
+    plt.ylabel(ylabel)
+
+    save_plot(path_to_save, title)
+
+
 def save_plot(path_to_save: Path, title: str) -> None:
     logger.info(f"Saving '{title}' plot to: {path_to_save}")
     plt.savefig(str(path_to_save))
