@@ -4,15 +4,14 @@ from pathlib import Path
 import typer
 from loguru import logger
 
-from results_analysis.generate_plots import generate_boxplot
+from results_analysis.generate_plots import generate_boxplot, generate_comparison_plot_multiple_y_axes
 from santas_workshop_tour.config import RESULTS_COMPARISONS, RESULTS_EVOLUTIONARY_ALGORITHM
-from results_analysis.files_io import read_json, read_value_from_txt_file, save_dict_to_json, find_subdirectories
+from results_analysis.files_io import read_json, save_dict_to_json, find_subdirectories
 from results_analysis.results_handler import is_result_valid, get_result_score, get_time_result, \
     get_fitness_value_result
 
+
 app = typer.Typer()
-
-
 
 
 @app.command()
@@ -70,6 +69,13 @@ def main(results: list[Path] = typer.Argument(None, help="List of result directo
         "Wartość funkcji celu"
     )
 
+    generate_comparison_plot_multiple_y_axes(
+        runtimes,
+        fitness_values,
+        list(scores.values()),
+        results,
+        RESULTS_COMPARISONS / current_timestamp / "comparison_plot.png",
+    )
 
 if __name__ == "__main__":
     app()

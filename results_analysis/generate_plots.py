@@ -61,7 +61,53 @@ def generate_boxplot(values: list[float], result_paths: list[Path], path_to_save
     save_plot(path_to_save, title)
 
 
-def save_plot(path_to_save: Path, title: str) -> None:
+def generate_comparison_plot_multiple_y_axes(
+        runtimes: list[float],
+        fitness_values: list[float],
+        results_scores: list[float],
+        result_paths: list[Path],
+        path_to_save: Path
+) -> None:
+    runs = [str(path.stem) for path in result_paths]
+
+    fig, ax1 = plt.subplots()
+
+    ax1.set_xlabel("Wykonanie algorytmu")
+    ax1.set_ylabel("Czas wykonania (s)", color="blue")
+    ax1.plot(runs, runtimes, marker="o", color="blue", label="Czas wykonania")
+    ax1.tick_params(axis="y", labelcolor="blue")
+
+    ax2 = ax1.twinx()
+    ax2.set_ylabel("Wartość funkcji celu", color="green")
+    ax2.plot(runs, fitness_values, marker="s", color="green", label="Wartość funkcji celu")
+    ax2.tick_params(axis="y", labelcolor="green")
+
+    ax3 = ax1.twinx()
+    ax3.spines.right.set_position(("outward", 60))  # Offset the third axis
+    ax3.set_ylabel("Ocena wyniku", color="red")
+    ax3.plot(runs, results_scores, marker="^", color="red", label="Ocena wyniku")
+    ax3.tick_params(axis="y", labelcolor="red")
+
+    ax1.tick_params(axis='x', labelrotation=90)
+
+    # Adjust spacing to fit the title
+    # plt.subplots_adjust(top=1.5)
+
+    title = "Czasy wykonania, wartości funkcji celu i oceny wyniku dla różnych uruchomień"
+    plt.title(title)
+
+    fig.tight_layout()
+    plt.grid(True, linestyle="--", alpha=0.5)
+
+    save_plot(path_to_save, title, True)
+
+
+def save_plot(path_to_save: Path, title: str, tight: bool = False) -> None:
     logger.info(f"Saving '{title}' plot to: {path_to_save}")
-    plt.savefig(str(path_to_save))
+
+    if tight:
+        plt.savefig(str(path_to_save), bbox_inches='tight')
+    else:
+        plt.savefig(str(path_to_save))
+
     plt.close()
