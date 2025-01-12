@@ -2,6 +2,7 @@ from pathlib import Path
 
 from loguru import logger
 
+from results_analysis.generate_plots import generate_line_plot, generate_statistics_plot
 from santas_workshop_tour.config import Individual
 from results_analysis.files_io import write_value_to_text_file, save_data_to_csv, save_dict_to_json
 
@@ -17,8 +18,30 @@ def save_result(
     save_data_to_csv(best_individual[0], path_to_save / "assigned_days.csv", ["family_id", "assigned_day"])
     save_dict_to_json(best_individual[1], path_to_save / "people_per_day.json")
 
-    save_data_to_csv(population_statistics, path_to_save / "population_statistics.csv", ["generation", "mean", "standard_deviation", "min_value", "max_value"])
-    save_data_to_csv(best_individuals_fitness_values, path_to_save / "best_individuals_fitness_values.csv", ["generation", "fitness_value"])
+    generations = list(range(0, len(best_individuals_fitness_values)))
+
+    save_data_to_csv(
+        population_statistics, path_to_save / "population_statistics.csv",
+        ["generation", "mean", "standard_deviation", "min_value", "max_value"]
+    )
+    generate_statistics_plot(
+        generations,
+        population_statistics,
+        path_to_save / "statistics_plot.png",
+    )
+
+    save_data_to_csv(
+        best_individuals_fitness_values, path_to_save / "best_individuals_fitness_values.csv",
+        ["generation", "fitness_value"]
+    )
+    generate_line_plot(
+        generations,
+        best_individuals_fitness_values,
+        "Generacja",
+        "Wartości funkcji celu",
+        "Zmiana wartości funkcji celu najlepszego osobnika od generacji",
+        path_to_save / "best_individuals_fitness_values_plot.png"
+    )
 
     write_value_to_text_file(best_individual.fitness.values[0], path_to_save / "fitness_function_value.txt")
     write_value_to_text_file(time, path_to_save / "time.txt")
