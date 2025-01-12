@@ -56,3 +56,7 @@ def read_json(path_to_json: Path) -> dict:
         data = json.load(file)
 
     return data
+
+
+def find_subdirectories(directory: Path) -> list[Path]:
+    return [subdir for subdir in directory.rglob('*') if subdir.is_dir()]
