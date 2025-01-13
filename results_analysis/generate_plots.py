@@ -51,7 +51,7 @@ def generate_statistics_plot(
 def generate_boxplot(values: list[float], result_paths: list[Path], path_to_save: Path, title: str, ylabel: str) -> None:
     plt.boxplot(values)
 
-    plt.xticks([1], ["Runtimes"])
+    # plt.xticks([1], ["Runtimes"])
 
     for i, (runtime, path) in enumerate(zip(values, result_paths)):
         plt.text(1.1, runtime, str(path.stem), ha="left", va="center", fontsize=9)
