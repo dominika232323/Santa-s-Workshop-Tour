@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     grabber = DataGrabber(FAMILY_DATA)
     algorithm = EvolutionaryAlgorithm(grabber, 0.7, 0.05, 0.02, 40, 30)
-    results, time = algorithm(2, 50)
+    results, time = algorithm(20, 100)
 
     best_individual = results[0]
     population_statistics = results[1]
