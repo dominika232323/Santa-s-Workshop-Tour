@@ -70,7 +70,8 @@ def calculate_accounting_penalty(individual: Individual) -> float:
     return max(accounting_penalty, 0)
 
 import pandas as pd
-
+# taken from example kaggle implementation
+# added to verify correctness
 def alternate_cost_function(individual, family_data):
     data = pd.read_csv("data/family_data.csv", index_col='family_id')
     penalty = 0

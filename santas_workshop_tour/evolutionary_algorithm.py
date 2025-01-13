@@ -50,6 +50,8 @@ class EvolutionaryAlgorithm:
                     del parent1.fitness.values
                     del parent2.fitness.values
 
+            if gen == int(generations_num * 0.7):
+                self.switch_mutation()
             for ind in offspring:
                 roll = random.random()
                 if roll < self.mutation_probability:
@@ -79,6 +81,10 @@ class EvolutionaryAlgorithm:
         self.toolbox.register("evaluate", partial(cost_function, family_choices=self.family_data))
         self.toolbox.register("succession", self.elite_selection)
         self.toolbox.register("select", tools.selTournament, tournsize=self.parents)
+
+    def switch_mutation(self):
+        self.toolbox.unregister("mutate")
+        self.toolbox.register("mutate", self.mutation, variant=MutationVariant.EXPLOITATIVE)
 
     def create_population(self, N: int) -> list[Individual]:
 
