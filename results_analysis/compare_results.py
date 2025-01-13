@@ -43,7 +43,7 @@ def main(results: list[Path] = typer.Argument(None, help="List of result directo
                 result_score = get_result_score(fitness_function_value, time)
                 scores[str(result_path)] = result_score
 
-                if best_result_path is None or result_score > best_result_score:
+                if best_result_path is None or result_score < best_result_score:
                     best_result_path = result_path
                     best_result_score = result_score
         except FileNotFoundError:
