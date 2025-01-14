@@ -19,8 +19,8 @@ if __name__ == '__main__':
         "family_mutation_probability": 0.02,
         "parents": 40,
         "elite_size": 30,
-        "generations": 2,
-        "population_size": 50
+        "generations": 20,
+        "population_size": 100
     }
 
     algorithm = EvolutionaryAlgorithm(
