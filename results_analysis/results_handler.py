@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 
 from loguru import logger
 
@@ -13,7 +14,8 @@ def save_result(
         population_statistics: list[tuple[float, float, float, float]],
         best_individuals_fitness_values: list[float],
         time: float,
-        path_to_save: Path
+        path_to_save: Path,
+        hyperparameters: dict[str, Any],
 ) -> None:
 
     save_data_to_csv(best_individual[0], path_to_save / "assigned_days.csv", ["family_id", "assigned_day"])
@@ -22,7 +24,8 @@ def save_result(
     generations = list(range(0, len(best_individuals_fitness_values)))
 
     save_data_to_csv(
-        population_statistics, path_to_save / "population_statistics.csv",
+        population_statistics,
+        path_to_save / "population_statistics.csv",
         ["generation", "mean", "standard_deviation", "min_value", "max_value"]
     )
     generate_statistics_plot(
@@ -32,7 +35,8 @@ def save_result(
     )
 
     save_data_to_csv(
-        best_individuals_fitness_values, path_to_save / "best_individuals_fitness_values.csv",
+        best_individuals_fitness_values,
+        path_to_save / "best_individuals_fitness_values.csv",
         ["generation", "fitness_value"]
     )
     generate_line_plot(
@@ -46,6 +50,8 @@ def save_result(
 
     write_value_to_text_file(best_individual.fitness.values[0], path_to_save / "fitness_function_value.txt")
     write_value_to_text_file(time, path_to_save / "time.txt")
+
+    save_dict_to_json(hyperparameters, path_to_save / "hyperparameters.csv")
 
 
 def is_result_valid(people_per_day_dict: dict[str: int]) -> bool:
