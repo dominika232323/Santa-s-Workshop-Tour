@@ -36,8 +36,8 @@ if __name__ == '__main__':
     best_individual = results[0]
     population_statistics = results[1]
     best_individuals_fitness_values = results[2]
-
+    penalties_by_generation = results[3]
 
     result_path = RESULTS_EVOLUTIONARY_ALGORITHM / current_timestamp
     logger.info(f"Saving results to {result_path}")
-    save_result(best_individual, population_statistics, best_individuals_fitness_values, time, result_path, hyperparameters)
+    save_result(best_individual, population_statistics, best_individuals_fitness_values, time, result_path, hyperparameters, penalties_by_generation)
