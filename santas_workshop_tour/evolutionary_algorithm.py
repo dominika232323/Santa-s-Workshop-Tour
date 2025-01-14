@@ -31,13 +31,14 @@ class EvolutionaryAlgorithm:
         self.elite_size = elite_size
 
     @timer
-    def __call__(self, generations_num: int, N: int) -> tuple[Any | None, list[Any], list[Any]]:
+    def __call__(self, generations_num: int, N: int) -> tuple[Any | None, list[Any], list[Any], list[Any]]:
         population = self.create_population(N)
         self.setup_evolution()
         best_individual = None
 
         population_statistics = []
         best_individuals_fitness_values = []
+        penalties_by_generation = []
 
         for gen in range(generations_num):
             offspring = self.toolbox.select(population, len(population))
@@ -59,9 +60,12 @@ class EvolutionaryAlgorithm:
                     del ind.fitness.values
 
             invalid_ind = [ind for ind in offspring if not ind.fitness.values]
-            fitnesses = map(self.toolbox.evaluate, invalid_ind)
-            for ind, fit in zip(offspring, fitnesses):
-                ind.fitness.values = fit
+
+            fitness_and_penalties = list(map(self.toolbox.evaluate, invalid_ind))
+
+            for index, (ind, (fitness, restriction, choice, accounting)) in enumerate(zip(offspring, fitness_and_penalties)):
+                ind.fitness.values = (fitness,)
+                penalties_by_generation.append([gen, index, restriction, choice, accounting, fitness])
 
             population = self.toolbox.succession(population, offspring, S=self.elite_size)
             best_ind = tools.selBest(population, 1)[0]
@@ -73,7 +77,7 @@ class EvolutionaryAlgorithm:
             if not best_individual or best_ind.fitness.values[0] < best_individual.fitness.values[0]:
                 best_individual = best_ind
 
-        return best_individual, population_statistics, best_individuals_fitness_values
+        return best_individual, population_statistics, best_individuals_fitness_values, penalties_by_generation
 
     def setup_evolution(self):
         self.toolbox.register("mutate", self.mutation, variant=MutationVariant.EXPLORATORY)

@@ -3,7 +3,7 @@ from santas_workshop_tour.config import Individual
 import numpy as np
 
 
-def cost_function(individual: Individual, family_choices: DataGrabber) -> float:
+def cost_function(individual: Individual, family_choices: DataGrabber) -> tuple:
     restriction_penalty = calculate_restriction_penalty(individual)
     choice_penalty = calculate_choice_penalty(individual, family_choices)
     accounting_penalty = calculate_accounting_penalty(individual)
@@ -16,7 +16,7 @@ def cost_function(individual: Individual, family_choices: DataGrabber) -> float:
         "accounting_penalty",
         accounting_penalty,
     )
-    return (fitness,)
+    return fitness, restriction_penalty, choice_penalty, accounting_penalty
 
 
 def calculate_restriction_penalty(individual: Individual) -> int:

@@ -67,8 +67,10 @@ def test_cost_function(mock_individual, mock_data_grabber):
 
     expected_restriction_penalty = sum(1 for i in visitors_by_days.values() if i < 125) * 100000
 
-    total_cost = cost_function(mock_individual, mock_data_grabber)
+    total_cost, restriction_penalty, choice_penalty, accounting_penalty = cost_function(mock_individual, mock_data_grabber)
 
+    assert choice_penalty == expected_choice_penalty
+    assert restriction_penalty == expected_restriction_penalty
     assert total_cost == (expected_restriction_penalty + expected_choice_penalty + 21162.476702791555,)
 
 

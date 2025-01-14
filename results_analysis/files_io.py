@@ -20,7 +20,7 @@ def read_value_from_txt_file(path_to_txt: Path) -> float:
         return float(file.read())
 
 
-def save_data_to_csv(data: list[Any], path_to_csv: Path, headers: list[str]) -> None:
+def save_data_to_csv(data: list[Any], path_to_csv: Path, headers: list[str], write_index: bool = True) -> None:
     path_to_csv.parent.mkdir(parents=True, exist_ok=True)
 
     with path_to_csv.open(mode='w', newline='', encoding='utf-8') as file:
@@ -31,11 +31,13 @@ def save_data_to_csv(data: list[Any], path_to_csv: Path, headers: list[str]) -> 
         if isinstance(data, list):
             for index, value in enumerate(data):
                 if isinstance(value, tuple):
-                    writer.writerow([index] + list(value))
+                    row = [index] + list(value) if write_index else list(value)
                 elif isinstance(value, list):
-                    writer.writerow([index] + value)
+                    row = [index] + value if write_index else value
                 else:
-                    writer.writerow([index, value])
+                    row = [index, value] if write_index else value
+
+                writer.writerow(row)
         else:
             raise ValueError("Unsupported data type. Only lists, tuples, or nested lists are supported.")
 
