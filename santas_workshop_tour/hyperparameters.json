@@ -1,0 +1,295 @@
+# Low Computation Budget (500)
+
+    {
+
+        "crossover_probability": 0.7,
+
+        "mutation_probability": 0.05,
+
+        "family_mutation_probability": 0.02,
+
+        "parents": 30,
+
+        "elite_size": 10,
+
+        "generations": 10,
+
+        "population_size": 50  # Computation budget: 500
+
+    },
+
+    {
+
+        "crossover_probability": 0.6,
+
+        "mutation_probability": 0.04,
+
+        "family_mutation_probability": 0.015,
+
+        "parents": 25,
+
+        "elite_size": 12,
+
+        "generations": 20,
+
+        "population_size": 25  # Computation budget: 500
+
+    },
+
+    {
+
+        "crossover_probability": 0.65,
+
+        "mutation_probability": 0.06,
+
+        "family_mutation_probability": 0.02,
+
+        "parents": 40,
+
+        "elite_size": 15,
+
+        "generations": 5,
+
+        "population_size": 100  # Computation budget: 500
+
+    },
+
+    {
+
+        "crossover_probability": 0.75,
+
+        "mutation_probability": 0.03,
+
+        "family_mutation_probability": 0.01,
+
+        "parents": 20,
+
+        "elite_size": 8,
+
+        "generations": 25,
+
+        "population_size": 20  # Computation budget: 500
+
+    },
+
+    # Medium Computation Budget (2500)
+
+    {
+
+        "crossover_probability": 0.7,
+
+        "mutation_probability": 0.03,
+
+        "family_mutation_probability": 0.02,
+
+        "parents": 40,
+
+        "elite_size": 20,
+
+        "generations": 25,
+
+        "population_size": 100  # Computation budget: 2500
+
+    },
+
+    {
+
+        "crossover_probability": 0.8,
+
+        "mutation_probability": 0.05,
+
+        "family_mutation_probability": 0.025,
+
+        "parents": 50,
+
+        "elite_size": 25,
+
+        "generations": 50,
+
+        "population_size": 50  # Computation budget: 2500
+
+    },
+
+    {
+
+        "crossover_probability": 0.65,
+
+        "mutation_probability": 0.06,
+
+        "family_mutation_probability": 0.02,
+
+        "parents": 45,
+
+        "elite_size": 22,
+
+        "generations": 20,
+
+        "population_size": 125  # Computation budget: 2500
+
+    },
+
+    {
+
+        "crossover_probability": 0.7,
+
+        "mutation_probability": 0.04,
+
+        "family_mutation_probability": 0.015,
+
+        "parents": 30,
+
+        "elite_size": 18,
+
+        "generations": 10,
+
+        "population_size": 250  # Computation budget: 2500
+
+    },
+
+    # High Computation Budget (5000)
+
+    {
+
+        "crossover_probability": 0.75,
+
+        "mutation_probability": 0.03,
+
+        "family_mutation_probability": 0.02,
+
+        "parents": 50,
+
+        "elite_size": 25,
+
+        "generations": 50,
+
+        "population_size": 100  # Computation budget: 5000
+
+    },
+
+    {
+
+        "crossover_probability": 0.7,
+
+        "mutation_probability": 0.05,
+
+        "family_mutation_probability": 0.015,
+
+        "parents": 60,
+
+        "elite_size": 30,
+
+        "generations": 25,
+
+        "population_size": 200  # Computation budget: 5000
+
+    },
+
+    {
+
+        "crossover_probability": 0.8,
+
+        "mutation_probability": 0.07,
+
+        "family_mutation_probability": 0.03,
+
+        "parents": 40,
+
+        "elite_size": 20,
+
+        "generations": 20,
+
+        "population_size": 250  # Computation budget: 5000
+
+    },
+
+    {
+
+        "crossover_probability": 0.65,
+
+        "mutation_probability": 0.04,
+
+        "family_mutation_probability": 0.02,
+
+        "parents": 55,
+
+        "elite_size": 28,
+
+        "generations": 40,
+
+        "population_size": 125  # Computation budget: 5000
+
+    },
+
+    # Very High Computation Budget (10000)
+
+    {
+
+        "crossover_probability": 0.7,
+
+        "mutation_probability": 0.06,
+
+        "family_mutation_probability": 0.02,
+
+        "parents": 80,
+
+        "elite_size": 30,
+
+        "generations": 50,
+
+        "population_size": 200  # Computation budget: 10000
+
+    },
+
+    {
+
+        "crossover_probability": 0.8,
+
+        "mutation_probability": 0.08,
+
+        "family_mutation_probability": 0.03,
+
+        "parents": 70,
+
+        "elite_size": 35,
+
+        "generations": 25,
+
+        "population_size": 400  # Computation budget: 10000
+
+    },
+
+    {
+
+        "crossover_probability": 0.75,
+
+        "mutation_probability": 0.05,
+
+        "family_mutation_probability": 0.02,
+
+        "parents": 60,
+
+        "elite_size": 20,
+
+        "generations": 100,
+
+        "population_size": 100  # Computation budget: 10000
+
+    },
+
+    {
+
+        "crossover_probability": 0.6,
+
+        "mutation_probability": 0.07,
+
+        "family_mutation_probability": 0.03,
+
+        "parents": 40,
+
+        "elite_size": 25,
+
+        "generations": 40,
+
+        "population_size": 250  # Computation budget: 10000
+
+    }
