@@ -66,9 +66,10 @@ tests:
 
 
 ## Run santas_workshop_tour program
-.PHONY: santas
+# Usage example: make santas hyperparameters_configs_path=santas_workshop_tour/hyperparameters.json
+.PHONY: santas $(hyperparameters_configs_path)
 santas:
-	$(PYTHON_INTERPRETER) santas_workshop_tour/main.py
+	$(PYTHON_INTERPRETER) santas_workshop_tour/main.py $(hyperparameters_configs_path)
 
 
 ## Compare results
