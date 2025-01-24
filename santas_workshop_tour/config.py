@@ -11,6 +11,8 @@ RESULTS_DIR = PROJ_ROOT / "results"
 RESULTS_EVOLUTIONARY_ALGORITHM = RESULTS_DIR / "evolutionary_algorithm"
 RESULTS_COMPARISONS = RESULTS_DIR / "comparisons"
 
+DEFAULT_HYPERPARAMETRS_CONFIGS_PATH = PROJ_ROOT / "santas_workshop_tour" / "hyperparameters.json"
+
 Individual = Tuple[List[int], Dict[int, int]]
 
 
