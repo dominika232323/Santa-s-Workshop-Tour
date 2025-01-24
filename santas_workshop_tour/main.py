@@ -14,10 +14,7 @@ from santas_workshop_tour.evolutionary_algorithm import EvolutionaryAlgorithm
 from results_analysis.results_handler import save_result
 
 
-def main(hyperparameters_configs_path: Annotated[Optional[Path], typer.Argument()] = None):
-    if hyperparameters_configs_path is None:
-        hyperparameters_configs_path = DEFAULT_HYPERPARAMETRS_CONFIGS_PATH
-
+def main(hyperparameters_configs_path: Annotated[Optional[Path], typer.Argument()] = DEFAULT_HYPERPARAMETRS_CONFIGS_PATH):
     logger.info(f"Loading hyperparameters from {hyperparameters_configs_path}")
 
     configs_list = read_json(hyperparameters_configs_path)
