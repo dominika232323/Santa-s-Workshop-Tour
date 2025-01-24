@@ -5,6 +5,7 @@ from loguru import logger
 from pathlib import Path
 from typing import Optional
 from typing_extensions import Annotated
+from rich.progress import track
 
 from results_analysis.files_io import read_json
 from santas_workshop_tour.config import FAMILY_DATA, RESULTS_EVOLUTIONARY_ALGORITHM, DEFAULT_HYPERPARAMETRS_CONFIGS_PATH
@@ -21,7 +22,7 @@ def main(hyperparameters_configs_path: Annotated[Optional[Path], typer.Argument(
 
     configs_list = read_json(hyperparameters_configs_path)
 
-    for hyperparameters in configs_list:
+    for hyperparameters in track(configs_list, description="Processing..."):
         current_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         logger.info(f"Current timestamp: {current_timestamp}")
 
