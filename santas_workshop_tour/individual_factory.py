@@ -1,9 +1,10 @@
 from typing import Tuple, List, Dict
 from deap import creator, base, tools
 from santas_workshop_tour.data_grabber import DataGrabber
+from santas_workshop_tour.cost_function import cost_function, alternate_cost_function
 import random
 import heapq
-import numpy as np
+import pandas as pd
 
 
 class IndividualFactory:
@@ -17,6 +18,13 @@ class IndividualFactory:
         toolbox = base.Toolbox()
         toolbox.register("individual", tools.initIterate, creator.Individual, init_func)
         return toolbox
+
+    def init_random(self, family_choices: DataGrabber, families_num: int = 5000, days: int = 100) -> Tuple[List[int], Dict[int, int]]:
+        visits_day = [random.randint(1, days) for _ in range(families_num)]
+        visitors_by_days = {i: 0 for i in range(1, 101)}
+        for family_id, day in enumerate(visits_day):
+            visitors_by_days[day] += family_choices.get_family_size(family_id)
+        return visits_day, visitors_by_days
 
     def init_individual(
         self, family_choices: DataGrabber, families_num: int = 5000, days: int = 100
