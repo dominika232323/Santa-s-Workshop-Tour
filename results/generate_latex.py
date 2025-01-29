@@ -45,7 +45,7 @@ def string_test(i, hyperparameters, best_fitness, results_dir, runtime):
     return s
 
 
-def string_compare(results_dir, test_num, score):
+def string_compare(results_dir, test_num, score, timestamp):
     s = (
         "\\section{Porównanie uzyskanych wyników}\n"
         "\n"
@@ -88,7 +88,7 @@ def string_compare(results_dir, test_num, score):
         "\\label{compare_normalized}\n"
         "\\end{figure}\n"
         "\n"
-        f"Test {test_num} osiągnął najlepszy wynik o wartości $" + f"{score}" + "$ (obliczonej ze wzoru \\ref{score}).\n"
+        f"Test {test_num} ({timestamp.replace("_", "\\_")}) osiągnął najlepszy wynik o wartości $" + f"{score}" + "$ (obliczonej ze wzoru \\ref{score}).\n"
     )
 
     return s
@@ -144,7 +144,7 @@ def print_section_comparison(timestamp, timestamps):
     best_result_timestamp, best_result_value = extract_timestamp_and_value(os.path.join(timestamp_dir, "best_result.json"))
     test_num = timestamps.index(best_result_timestamp) + 1
 
-    print(string_compare(f"results/{timestamp_dir}", test_num, best_result_value))
+    print(string_compare(f"results/{timestamp_dir}", test_num, best_result_value, best_result_timestamp))
 
 
 if __name__ == "__main__":
