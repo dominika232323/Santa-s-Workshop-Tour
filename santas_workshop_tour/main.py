@@ -32,6 +32,7 @@ def main(hyperparameters_configs_path: Annotated[Optional[Path], typer.Argument(
             hyperparameters.get("family_mutation_probability"),
             hyperparameters.get("parents"),
             hyperparameters.get("elite_size"),
+            hyperparameters.get("random_init")
         )
         results, time = algorithm(hyperparameters.get("generations"), hyperparameters.get("population_size"))
 

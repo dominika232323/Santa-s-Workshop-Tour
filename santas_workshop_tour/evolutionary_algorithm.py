@@ -1,13 +1,14 @@
 from deap import tools
-
 from santas_workshop_tour.data_grabber import DataGrabber
 from santas_workshop_tour.config import Individual, MutationVariant
 from santas_workshop_tour.decorators import timer
 from santas_workshop_tour.individual_factory import IndividualFactory
-from santas_workshop_tour.cost_function import cost_function
+from santas_workshop_tour.cost_function import cost_function, alternate_cost_function
 from typing import Tuple, Any
 from functools import partial
 import random
+import copy
+
 
 from results_analysis.statistics import get_population_statistics
 
@@ -21,6 +22,7 @@ class EvolutionaryAlgorithm:
         family_mutation_probability: float,
         parents: int,
         elite_size: int,
+        random_init: bool
     ) -> None:
         self.toolbox = None
         self.family_data = family_data
@@ -29,6 +31,7 @@ class EvolutionaryAlgorithm:
         self.family_mutation_probability = family_mutation_probability
         self.parents = parents
         self.elite_size = elite_size
+        self.init = random_init
 
     @timer
     def __call__(self, generations_num: int, N: int) -> tuple[Any | None, list[Any], list[Any], list[Any]]:
@@ -42,8 +45,9 @@ class EvolutionaryAlgorithm:
 
         for gen in range(generations_num):
             offspring = self.toolbox.select(population, len(population))
-
             offspring = list(map(self.toolbox.clone, offspring))
+            self.check_unique(population)
+
             for parent1, parent2 in zip(offspring[::2], offspring[1::2]):
                 roll = random.random()
                 if roll < self.crossover_probability:
@@ -63,7 +67,8 @@ class EvolutionaryAlgorithm:
 
             fitness_and_penalties = list(map(self.toolbox.evaluate, invalid_ind))
 
-            for index, (ind, (fitness, restriction, choice, accounting)) in enumerate(zip(offspring, fitness_and_penalties)):
+            for index, (ind, (fitness, restriction, choice, accounting)) in enumerate(zip(invalid_ind, fitness_and_penalties)):
+                print(f"Ind: {index}", fitness)
                 ind.fitness.values = (fitness,)
                 penalties_by_generation.append([gen, index, restriction, choice, accounting, fitness])
 
@@ -93,9 +98,14 @@ class EvolutionaryAlgorithm:
     def create_population(self, N: int) -> list[Individual]:
 
         individual = IndividualFactory()
-        self.toolbox = individual.create_toolbox(
-            lambda: individual.init_individual(self.family_data)
+        if self.init:
+            self.toolbox = individual.create_toolbox(
+            lambda: individual.init_heuristic(self.family_data)
         )
+        else:
+            self.toolbox = individual.create_toolbox(
+                lambda: individual.init_individual(self.family_data)
+            )
         self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
 
         return self.toolbox.population(n=N)
@@ -132,10 +142,10 @@ class EvolutionaryAlgorithm:
         )
         visits_days_1 = ind1_left + ind2_right
         visits_days_2 = ind2_left + ind1_right
-        new_dict_1 = self.build_visitors_by_days(visits_days_1)
-        new_dict_2 = self.build_visitors_by_days(visits_days_2)
-        new_individual_1 = (visits_days_1, new_dict_1)
-        new_individual_2 = (visits_days_2, new_dict_2)
+        new_dict_1 = copy.deepcopy(self.build_visitors_by_days(visits_days_1))
+        new_dict_2 = copy.deepcopy(self.build_visitors_by_days(visits_days_2))
+        new_individual_1 = (copy.deepcopy(visits_days_1), new_dict_1)
+        new_individual_2 = (copy.deepcopy(visits_days_2), new_dict_2)
 
         return new_individual_1, new_individual_2
 
@@ -181,3 +191,11 @@ class EvolutionaryAlgorithm:
         remaining_slots = len(population) - S
         next_gen = elites + tools.selBest(offspring, remaining_slots)
         return next_gen
+
+    def check_unique(self, offspring):
+        a = []
+        for ind in offspring:
+            if ind[0] not in a:
+                a.append(ind[0])
+        print("Unique individuals", len(a), len(offspring))
+        # print(a)

@@ -1,6 +1,7 @@
 from santas_workshop_tour.data_grabber import DataGrabber
 from santas_workshop_tour.config import Individual
 import numpy as np
+import pandas as pd
 
 
 def cost_function(individual: Individual, family_choices: DataGrabber) -> tuple:
@@ -69,10 +70,11 @@ def calculate_accounting_penalty(individual: Individual) -> float:
     accounting_penalty = np.sum(penalty)
     return max(accounting_penalty, 0)
 
-import pandas as pd
+
 # taken from example kaggle implementation
 # added to verify correctness
 def alternate_cost_function(individual, family_data):
+    individual = individual[0]
     data = pd.read_csv("data/family_data.csv", index_col='family_id')
     penalty = 0
 
@@ -135,15 +137,15 @@ def alternate_cost_function(individual, family_data):
             choice_penalty  += 500 + 36 * n + 398 * n
 
     penalty += choice_penalty
-    print(daily_occupancy)
-    print("choice_cost", choice_penalty)
+    # print(daily_occupancy)
+    # print("choice_cost", choice_penalty)
     # for each date, check total occupancy
     #  (using soft constraints instead of hard constraints)
     restrict_penalty = 0
     for _, v in daily_occupancy.items():
         if (v > MAX_OCCUPANCY) or (v < MIN_OCCUPANCY):
             restrict_penalty += 100000000
-    print("restrict_cost", restrict_penalty)
+    # print("restrict_cost", restrict_penalty)
     penalty += restrict_penalty
     # Calculate the accounting cost
     # The first day (day 100) is treated special
@@ -158,7 +160,7 @@ def alternate_cost_function(individual, family_data):
         diff = abs(today_count - yesterday_count)
         accounting_cost += max(0, (daily_occupancy[day]-125.0) / 400.0 * daily_occupancy[day]**(0.5 + diff / 50.0))
         yesterday_count = today_count
-    print("accounting_cost", accounting_cost)
+    # print("accounting_cost", accounting_cost)
     penalty += accounting_cost
 
-    return penalty
+    return penalty, restrict_penalty, choice_penalty, accounting_cost

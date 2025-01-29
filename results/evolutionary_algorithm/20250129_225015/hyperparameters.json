@@ -1,0 +1,9 @@
+{
+    "crossover_probability": 0.4,
+    "mutation_probability": 0.3,
+    "family_mutation_probability": 0.05,
+    "parents": 2,
+    "elite_size": 4,
+    "generations": 20,
+    "population_size": 100
+}
