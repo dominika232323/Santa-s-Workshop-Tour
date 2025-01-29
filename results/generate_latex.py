@@ -51,7 +51,6 @@ def string_compare(results_dir, test_num, score):
         "\\centering\n"
         "\\includegraphics[width=0.9\\linewidth]{" + f"{results_dir}/fitness_value_distribution.png" + "}\n"
         "\\label{compare_fitness_values}\n"
-        "\\label"
         "\\end{figure}\n"
         "\n"
         "Wykres przedstawiający rozkład czasu działania algorytmu z każdego testu:\n"
