@@ -23,7 +23,8 @@ Santa needs the help of the Kaggle community to optimize which day each family i
 - `make lint` - lints using flake8 and black
 - `make format` - formats source code with black
 - `make tests` - runs tests from *santas_workshop_tour/tests/*
-- `make santas` - runs *santas_workshop_tour/main.py* script
+- `make santas` - runs *santas_workshop_tour/main.py* script with hyperparemeters configurations from *santas_workshop_tour/hyperparameters.json*
+- `make santas hyperparameters_configs_path=path/to/hyperparameters.json` - runs *santas_workshop_tour/main.py* script with hyperparemeters configurations from given path
 - `make compare` - compares all results from *results/evolutionary_algorithm*
 - `make compare results="path/to/result/1 path/to/result/2"` - compares given results 
 
